@@ -9,8 +9,10 @@ public class MobAI : MonoBehaviour
     public PlayerControl player;
     public float viewAngle;
     private NavMeshAgent _navMeshAgent;
+    public float damage = 30;
     private bool _isPlayerNoticed;
     private bool _playerIsAgr = false;
+    private PlayerHealth _playerHealth;
     Random rnd = new Random();
 
     void Start()
@@ -24,6 +26,7 @@ public class MobAI : MonoBehaviour
         NoticePlayerUpdate();
         ChaseUpdate();
         PatrolUpdate();
+        AttackUpdate();
     }
 
     private void PickNewPatrolPoint()
@@ -33,7 +36,7 @@ public class MobAI : MonoBehaviour
     
     private void PatrolUpdate()
     {
-        if (_navMeshAgent.remainingDistance == 0 || (_playerIsAgr & _isPlayerNoticed == false))
+        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance || (_playerIsAgr & _isPlayerNoticed == false))
         {
             _playerIsAgr = false;
             PickNewPatrolPoint();
@@ -43,6 +46,7 @@ public class MobAI : MonoBehaviour
     private void InitComponentLinks()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _playerHealth = player.GetComponent<PlayerHealth>();
     }
     
     private void NoticePlayerUpdate()
@@ -69,6 +73,14 @@ public class MobAI : MonoBehaviour
         {
             _navMeshAgent.destination = player.transform.position;
             _playerIsAgr = true;
+        }
+    }
+
+    private void AttackUpdate()
+    {
+        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance &_isPlayerNoticed)
+        {
+            _playerHealth.DealDamage(damage * Time.deltaTime);
         }
     }
 }
