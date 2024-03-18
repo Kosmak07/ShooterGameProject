@@ -10,6 +10,7 @@ public class PlayerControl : MonoBehaviour
     public float gravity = 9.8f;
     public float jumpForce;
     public float Speed;
+    public Animator animator;
 
     void Start()
     {
@@ -19,23 +20,30 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         _moveVector = Vector3.zero;
+        var runDirection = 0;
 
         if (Input.GetKey(KeyCode.W))
         {
             _moveVector += transform.forward;
+            runDirection = 1;
         }
         if (Input.GetKey(KeyCode.S))
         {
             _moveVector -= transform.forward;
+            runDirection = 2;
         }
         if (Input.GetKey(KeyCode.D))
         {
             _moveVector += transform.right;
+            runDirection = 3;
         }
         if (Input.GetKey(KeyCode.A))
         {
             _moveVector -= transform.right;
+            runDirection = 4;
         }
+
+        animator.SetInteger("run Direction", runDirection);
 
         if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)
         {

@@ -24,17 +24,17 @@ public class Ammo : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        DamageEnemy(collision);
+        Destroy(gameObject);
+    } 
+
+    private void DamageEnemy(Collision collision)
+    {
         var mobHealth = collision.gameObject.GetComponent<MobHealth>();
         if (mobHealth != null)
         {
-            mobHealth.health -= damage;
-            if (mobHealth.health <= 0)
-            {
-                Destroy(mobHealth.gameObject);
-            }
+            mobHealth.DealDamage(damage);
         }
-        
-        Destroy(gameObject);
-    } 
+    }
 }
 

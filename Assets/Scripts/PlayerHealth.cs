@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public GameObject gameplayUI;
     public GameObject gameOverScreen;
     public GameObject Gun;
+    public Animator animator;
 
     public void DealDamage(float damage)
     {
@@ -20,14 +21,15 @@ public class PlayerHealth : MonoBehaviour
             GetComponent<PlayerControl>().enabled = false;
             Gun.GetComponent<Shooter>().enabled = false;
             GetComponent<CameraRotation>().enabled = false;
+            animator.SetTrigger("death");
         }
 
-        BrawHealthBar();
+        DrawHealthBar();
     }
 
     void Start()
     {
-        BrawHealthBar();
+        DrawHealthBar();
     }
 
     // Update is called once per frame
@@ -36,7 +38,14 @@ public class PlayerHealth : MonoBehaviour
         
     }
 
-    private void BrawHealthBar()
+    public void AddHealth(float amout)
+    {
+        value += amout;
+        value = Mathf.Clamp(value, 0, 100);
+        DrawHealthBar();
+    }
+
+    private void DrawHealthBar()
     {
         valueRectTransform.anchorMax = new Vector2(value / 100, 1);
     }

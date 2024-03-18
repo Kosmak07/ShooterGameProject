@@ -9,7 +9,9 @@ public class MobAI : MonoBehaviour
     public PlayerControl player;
     public float viewAngle;
     private NavMeshAgent _navMeshAgent;
-    public float damage = 30;
+    public float damage = 20;
+    public Animator animator;
+    
     private bool _isPlayerNoticed;
     private bool _playerIsAgr = false;
     private PlayerHealth _playerHealth;
@@ -53,6 +55,8 @@ public class MobAI : MonoBehaviour
     {
         var direction = player.transform.position - transform.position;
         _isPlayerNoticed = false;
+        if (_playerHealth.value <= 0) return;
+        if (Vector3.Distance(transform.position, player.transform.position) > 40) return;
 
         if (Vector3.Angle(transform.forward, direction) < viewAngle)
         {
@@ -78,9 +82,23 @@ public class MobAI : MonoBehaviour
 
     private void AttackUpdate()
     {
-        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance &_isPlayerNoticed)
+        if (_isPlayerNoticed)
         {
-            _playerHealth.DealDamage(damage * Time.deltaTime);
+            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+            {
+                animator.SetTrigger("Attack");
+            }
+        }
+    }
+
+    public void AttackDamage()
+    {
+        if (_isPlayerNoticed)
+        {
+            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+            {
+                _playerHealth.DealDamage(damage);
+            }
         }
     }
 }
