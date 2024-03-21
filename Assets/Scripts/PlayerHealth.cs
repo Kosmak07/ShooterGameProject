@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
             GetComponent<PlayerControl>().enabled = false;
             Gun.GetComponent<Shooter>().enabled = false;
             GetComponent<CameraRotation>().enabled = false;
+            GetComponent<GrenadeCaster>().enabled = false;
             animator.SetTrigger("death");
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class PlayerControl : MonoBehaviour
     public float jumpForce;
     public float Speed;
     public Animator animator;
+    public float score = 0;
+    public Text text;
+    public GameObject gameplayUI;
+    public GameObject gameWinScreen;
+    public GameObject Gun;
+
 
     void Start()
     {
@@ -49,6 +56,17 @@ public class PlayerControl : MonoBehaviour
         {
             _fallVelocity = -jumpForce;
         }
+
+        if (score >= 30)
+        {
+            gameplayUI.SetActive(false);
+            gameWinScreen.SetActive(true);
+            animator.SetTrigger("Win");
+            Gun.GetComponent<Shooter>().enabled = false;
+            GetComponent<CameraRotation>().enabled = false;
+            GetComponent<GrenadeCaster>().enabled = false;
+            GetComponent<PlayerControl>().enabled = false;
+        }
     }
 
     void FixedUpdate()
@@ -61,5 +79,11 @@ public class PlayerControl : MonoBehaviour
         {
             _fallVelocity = 0;
         }
+    }
+
+    public void AddPointToScore()
+    {
+        score++;
+        text.text = score.ToString();
     }
 }

@@ -30,24 +30,29 @@ public class Shooter : MonoBehaviour
 
         if (Input.GetKey(KeyCode.R))
         {
-            if (nowAmmoInMagazine != 30)
-            {
-                if (allAmmoInMagazine > 30)
-                {
-                    allAmmoInMagazine -= 30;
-                    nowAmmoInMagazine = 30;
-                }
-                else if (allAmmoInMagazine != 0)
-                {
-                    nowAmmoInMagazine = allAmmoInMagazine;
-                    allAmmoInMagazine = 0;
-                }
-            }
+            Reload();
             NewTime();
         }
     }
     private void NewTime()
     {
         text.text = "Ammo: " + nowAmmoInMagazine.ToString() + "/" + allAmmoInMagazine.ToString();
+    }
+
+    public void Reload()
+    {
+        if (nowAmmoInMagazine != 30)
+        {
+            if (allAmmoInMagazine > 30)
+            {
+                allAmmoInMagazine -= 30;
+                nowAmmoInMagazine = 30;
+            }
+            else if (allAmmoInMagazine != 0)
+            {
+                nowAmmoInMagazine = allAmmoInMagazine;
+                allAmmoInMagazine = 0;
+            }
+        }
     }
 }
